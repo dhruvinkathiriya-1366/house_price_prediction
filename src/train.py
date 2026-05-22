@@ -25,15 +25,17 @@ cat_col=train_df.select_dtypes(include="object").columns
 ordinal_col=[
     "ExterQual", "ExterCond", "KitchenQual",
     "HeatingQC", "BsmtQual", "BsmtCond",
-    "FireplaceQu", "GarageQual", "GarageCond"]  
+    "FireplaceQu", "GarageQual", "GarageCond"]
+numeric_col = [col for col in x_train.columns if col not in cat_col]  
 nominal=[col for col in cat_col if col not in ordinal_col]
 ordinal_order=["Po", "Fa", "TA", "Gd", "Ex"]
 
 #train_model
 
-pipeline=build_pipeine(nominal,ordinal_col,ordinal_order)
+pipeline=build_pipeine(nominal,ordinal_col,ordinal_order,numeric_col)
 pipeline.fit(x_train,y_train)
 train_r2,train_rmse=eveluate_model(pipeline,x_train,y_train)
+
 print("train:R2 & Rmse")
 print(f"R2:{train_r2}")
 print(f"Rmse:{train_rmse}")  
@@ -65,3 +67,19 @@ print(f"Rmse:{test_Rmse}")
 # random_search.fit(x_train,y_train)
 # print(random_search.best_params_)
 # print(random_search.best_score_)
+joblib.dump(pipeline,"models/model.pkl")
+model=joblib.load("models/model.pkl")
+pred=np.expm1(model.predict(test_df))
+# create submission dataframe
+submission = pd.DataFrame({
+    "Id":test_id,
+    "SalePrice":pred
+})
+
+# save csv
+submission.to_csv(
+    "data/processed/submission.csv",
+    index=False
+)
+
+print("submission file created")
