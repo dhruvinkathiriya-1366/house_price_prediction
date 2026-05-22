@@ -4,6 +4,20 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from xgboost import XGBRegressor
 
+from sklearn.base import BaseEstimator, TransformerMixin
+
+class ColumnFiller(BaseEstimator, TransformerMixin):
+    def __init__(self, train_columns):
+        self.train_columns = train_columns
+    def fit(self, X, y=None):
+        return self
+    def transform(self, X):
+        # Add any missing columns with 0 / mode defaults
+        for col in self.train_columns:
+            if col not in X.columns:
+                X[col] = 0
+        return X[self.train_columns]
+    
 def build_pipeine(nominal,ordinal_col,ordinal_order,numeric_col):
     
     numeric_transformer = Pipeline(
