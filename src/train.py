@@ -27,23 +27,3 @@ test_R2,test_Rmse=eveluate_model(model,x_test,y_test)
 #print("test:R2 & Rmse")
 #print(f"R2:{test_R2}")
 #print(f"Rmse:{test_Rmse}") 
-
-#save the model
-joblib.dump(model,"models/houce_price_model.pkl")
-model=joblib.load("models/houce_price_model.pkl")
-
-#predict
-final_pred = np.expm1(model.predict(test_df))
-print(final_pred)
-
-#create the submission.csv
-
-Submission=pd.DataFrame({
-    "Id":test_id,
-    "SalePrice":final_pred
-})
-
-Submission.to_csv(
-    "data/processed/Submission.csv",
-    index=False
-)
