@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib 
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 
 from data_preprocessing import load_data,preprocess_data
 from model import train_model
@@ -27,3 +28,12 @@ test_R2,test_Rmse=eveluate_model(model,x_test,y_test)
 #print("test:R2 & Rmse")
 #print(f"R2:{test_R2}")
 #print(f"Rmse:{test_Rmse}") 
+
+score=cross_val_score(
+    model,
+    x,
+    y,
+    scoring="r2",
+    cv=5
+)
+print(score.mean())
