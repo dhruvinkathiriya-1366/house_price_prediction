@@ -34,7 +34,7 @@ if st.button("Predict price"):
     
     # Load train to get all expected columns
     TRAIN_PATH = os.path.join(BASE_DIR, "data", "raw", "train.csv")
-    train_df = pd.read_csv(TRAIN_PATH)
+    train_df = pd.read_csv("data/raw/train.csv")
     train_df = train_df.drop(columns=["SalePrice", "Id"], errors="ignore")
     
     # Start with one empty row matching all training columns
