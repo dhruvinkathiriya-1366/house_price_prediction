@@ -1,7 +1,7 @@
 import streamlit as st
 import joblib, os, sys, pandas as pd
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(BASE_DIR, "src"))
 
 MODEL_PATH = os.path.join(BASE_DIR, "models", "model.pkl")
